@@ -12,29 +12,48 @@ public class Day2 {
     public static void main(String[] args) throws IOException {
         final List<List<Integer>> input = parseInput("src/day2/input.txt");
 
-        final List<Integer> difference = new ArrayList<>();
+        final List<Integer> products = new ArrayList<>();
 
         for (final List<Integer> line : input) {
-            int largest = 0;
-            int smallest = 922337203;
+            for (int i = 0; i < line.size(); i++) {
+                for (int j = i + 1; j < line.size(); j++) {
+                    final int number1 = line.get(i);
+                    final int number2 = line.get(j);
 
-            for (final int number : line) {
-                if (number > largest) {
-                    largest = number;
-                }
+                    if (number1 % number2 == 0) {
+                        products.add(Math.abs(number1 / number2));
+                    }
 
-                if (number < smallest) {
-                    smallest = number;
+                    if (number2 % number1 == 0) {
+                        products.add(Math.abs(number2 / number1));
+                    }
                 }
             }
-
-            difference.add(largest - smallest);
         }
 
-        int sum = difference.stream().mapToInt(Math::toIntExact).sum();
+        int sum = products.stream().mapToInt(Math::toIntExact).sum();
         System.out.println(sum);
+
+
+//        part 1
+//        for (final List<Integer> line : input) {
+//            int largest = 0;
+//            int smallest = 922337203;
+//
+//            for (final int number : line) {
+//                if (number > largest) {
+//                    largest = number;
+//                }
+//
+//                if (number < smallest) {
+//                    smallest = number;
+//                }
+//            }
+//
+//            difference.add(largest - smallest);
+//        }
     }
-    
+
     private static List<List<Integer>> parseInput(final String filename) throws IOException {
         List<List<Integer>> parsedInput = new ArrayList<>();
 
