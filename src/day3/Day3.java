@@ -1,8 +1,8 @@
 package day3;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Day3 {
 
@@ -20,8 +20,10 @@ public class Day3 {
         int x = 0;
         int y = 0;
 
-        final Set<Coordinates> visited = new HashSet<>();
-        visited.add(new Coordinates(x, y));
+        final Map<Coordinates, Integer> visited = new HashMap<>();
+
+        Coordinates currentCoords = new Coordinates(x, y);
+        visited.put(currentCoords, 1);
 
         String currentDirection = "right";
 
@@ -29,36 +31,88 @@ public class Day3 {
             if ("right".equals(currentDirection)) {
                 x++;
 
-                if (!visited.contains(new Coordinates(x, y + 1))) {
+                if (!visited.containsKey(new Coordinates(x, y + 1))) {
                     currentDirection = "up";
                 }
 
             } else if ("up".equals(currentDirection)) {
                 y++;
 
-                if (!visited.contains(new Coordinates(x - 1, y))) {
+                if (!visited.containsKey(new Coordinates(x - 1, y))) {
                     currentDirection = "left";
                 }
 
             } else if ("left".equals(currentDirection)) {
                 x--;
 
-                if (!visited.contains(new Coordinates(x, y - 1))) {
+                if (!visited.containsKey(new Coordinates(x, y - 1))) {
                     currentDirection = "down";
                 }
 
             } else if ("down".equals(currentDirection)) {
                 y--;
 
-                if (!visited.contains(new Coordinates(x + 1, y))) {
+                if (!visited.containsKey(new Coordinates(x + 1, y))) {
                     currentDirection = "right";
                 }
             }
 
-            visited.add(new Coordinates(x, y));
+            currentCoords = new Coordinates(x, y);
+            final int value = getValue(currentCoords, visited);
+            visited.put(currentCoords, value);
+
+            if (value > num) {
+                System.out.println(value);
+            }
         }
 
         return new Coordinates(x, y);
+    }
+
+    public static int getValue(final Coordinates coords, final Map<Coordinates, Integer> visited) {
+        int value = 0;
+
+        final Coordinates right = new Coordinates(coords.getX() + 1, coords.getY());
+        if (visited.containsKey(right)) {
+            value += visited.get(right);
+        }
+
+        final Coordinates rightUp = new Coordinates(coords.getX() + 1, coords.getY() + 1);
+        if (visited.containsKey(rightUp)) {
+            value += visited.get(rightUp);
+        }
+
+        final Coordinates up = new Coordinates(coords.getX(), coords.getY() + 1);
+        if (visited.containsKey(up)) {
+            value += visited.get(up);
+        }
+
+        final Coordinates leftUp = new Coordinates(coords.getX() - 1, coords.getY() + 1);
+        if (visited.containsKey(leftUp)) {
+            value += visited.get(leftUp);
+        }
+
+        final Coordinates left = new Coordinates(coords.getX() - 1, coords.getY());
+        if (visited.containsKey(left)) {
+            value += visited.get(left);
+        }
+
+        final Coordinates leftDown = new Coordinates(coords.getX() - 1, coords.getY() - 1);
+        if (visited.containsKey(leftDown)) {
+            value += visited.get(leftDown);
+        }
+
+        final Coordinates down = new Coordinates(coords.getX(), coords.getY() - 1);
+        if (visited.containsKey(down)) {
+            value += visited.get(down);
+        }
+
+        final Coordinates downRight = new Coordinates(coords.getX() + 1, coords.getY() - 1);
+        if (visited.containsKey(downRight)) {
+            value += visited.get(downRight);
+        }
+
+        return value;
     }
 
     public static class Coordinates {
