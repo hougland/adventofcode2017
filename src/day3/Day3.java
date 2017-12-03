@@ -22,8 +22,8 @@ public class Day3 {
 
         final Map<Coordinates, Integer> visited = new HashMap<>();
 
-        Coordinates currentCoords = new Coordinates(x, y);
-        visited.put(currentCoords, 1);
+        final Coordinates initialCoords = new Coordinates(x, y);
+        visited.put(initialCoords, 1);
 
         String currentDirection = "right";
 
@@ -57,7 +57,7 @@ public class Day3 {
                 }
             }
 
-            currentCoords = new Coordinates(x, y);
+            final Coordinates currentCoords = new Coordinates(x, y);
             final int value = getValue(currentCoords, visited);
             visited.put(currentCoords, value);
 
@@ -113,38 +113,5 @@ public class Day3 {
         }
 
         return value;
-    }
-
-    public static class Coordinates {
-        private int x;
-        private int y;
-
-        public Coordinates(final int x, final int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if ((obj == null) || (getClass() != obj.getClass())) {
-                return false;
-            }
-
-            Coordinates coords = (Coordinates) obj;
-            return x == coords.getX() && y == coords.getY();
-        }
-
-        @Override
-        public int hashCode() {
-            return x + y;
-        }
     }
 }
