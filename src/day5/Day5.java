@@ -13,31 +13,22 @@ public class Day5 {
 
         int numSteps = 0;
         int currentIndex = 0;
-        boolean escaped = false;
 
-        while (!escaped) {
+        while (currentIndex < input.size()) {
             final int value = input.get(currentIndex);
 
-            int newValue = value;
-
             if (value >= 3) {
-                newValue -= 1;
+                input.set(currentIndex, value - 1);
             } else {
-                newValue++;
+                input.set(currentIndex, value + 1);
             }
 
             numSteps++;
-            input.set(currentIndex, newValue);
             currentIndex = currentIndex + value;
-
-            if (currentIndex >= input.size()) {
-                escaped = true;
-            }
         }
 
         System.out.println(numSteps);
     }
-
 
     private static List<Integer> parseInput(final String filename) throws IOException {
         final List<Integer> parsedInput = new ArrayList<>();
