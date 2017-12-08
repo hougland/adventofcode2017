@@ -23,74 +23,14 @@ public class Day8 {
                 registerToValue.put(instruction.operationRegister, 0);
             }
 
-            switch (instruction.operation) {
-                case (">"):
-                    if (registerToValue.get(instruction.operationRegister) > instruction.operationValue) {
-                        int value = registerToValue.get(instruction.registerThatWillChange);
-                        if ("inc".equals(instruction.instruction)) {
-                            registerToValue.put(instruction.registerThatWillChange, value += instruction.valueThatWillBeAddedOrSubtracted);
-                        } else {
-                            registerToValue.put(instruction.registerThatWillChange, value -= instruction.valueThatWillBeAddedOrSubtracted);
-                        }
-                    }
-                    break;
-                case ("<"):
-                    if (registerToValue.get(instruction.operationRegister) < instruction.operationValue) {
-                        int value = registerToValue.get(instruction.registerThatWillChange);
+            if (runCondition(registerToValue, instruction.operationRegister, instruction.operation, instruction.operationValue)) {
+                int value = registerToValue.get(instruction.registerThatWillChange);
 
-                        if ("inc".equals(instruction.instruction)) {
-                            registerToValue.put(instruction.registerThatWillChange, value += instruction.valueThatWillBeAddedOrSubtracted);
-                        } else {
-                            registerToValue.put(instruction.registerThatWillChange, value -= instruction.valueThatWillBeAddedOrSubtracted);
-                        }
-                    }
-                    break;
-                case (">="):
-                    if (registerToValue.get(instruction.operationRegister) >= instruction.operationValue) {
-                        int value = registerToValue.get(instruction.registerThatWillChange);
-
-                        if ("inc".equals(instruction.instruction)) {
-                            registerToValue.put(instruction.registerThatWillChange, value += instruction.valueThatWillBeAddedOrSubtracted);
-                        } else {
-                            registerToValue.put(instruction.registerThatWillChange, value -= instruction.valueThatWillBeAddedOrSubtracted);
-                        }
-                    }
-                    break;
-                case ("<="):
-                    if (registerToValue.get(instruction.operationRegister) <= instruction.operationValue) {
-                        int value = registerToValue.get(instruction.registerThatWillChange);
-
-                        if ("inc".equals(instruction.instruction)) {
-                            registerToValue.put(instruction.registerThatWillChange, value += instruction.valueThatWillBeAddedOrSubtracted);
-                        } else {
-                            registerToValue.put(instruction.registerThatWillChange, value -= instruction.valueThatWillBeAddedOrSubtracted);
-                        }
-                    }
-                    break;
-                case ("!="):
-                    if (registerToValue.get(instruction.operationRegister) != instruction.operationValue) {
-                        int value = registerToValue.get(instruction.registerThatWillChange);
-
-                        if ("inc".equals(instruction.instruction)) {
-                            registerToValue.put(instruction.registerThatWillChange, value += instruction.valueThatWillBeAddedOrSubtracted);
-                        } else {
-                            registerToValue.put(instruction.registerThatWillChange, value -= instruction.valueThatWillBeAddedOrSubtracted);
-                        }
-                    }
-                    break;
-                case ("=="):
-                    if (registerToValue.get(instruction.operationRegister) == instruction.operationValue) {
-                        int value = registerToValue.get(instruction.registerThatWillChange);
-
-                        if ("inc".equals(instruction.instruction)) {
-                            registerToValue.put(instruction.registerThatWillChange, value += instruction.valueThatWillBeAddedOrSubtracted);
-                        } else {
-                            registerToValue.put(instruction.registerThatWillChange, value -= instruction.valueThatWillBeAddedOrSubtracted);
-                        }
-                    }
-                    break;
-                default:
-                    throw new RuntimeException("Unexpected operator");
+                if ("inc".equals(instruction.instruction)) {
+                    registerToValue.put(instruction.registerThatWillChange, value += instruction.valueThatWillBeAddedOrSubtracted);
+                } else {
+                    registerToValue.put(instruction.registerThatWillChange, value -= instruction.valueThatWillBeAddedOrSubtracted);
+                }
             }
 
             int currentMaxValue = Collections.max(registerToValue.values());
@@ -102,6 +42,32 @@ public class Day8 {
 
         System.out.println(Collections.max(registerToValue.values()));
         System.out.println(max);
+    }
+
+    private static boolean runCondition(
+            final Map<String, Integer> registerToValues,
+            final String register,
+            final String operation,
+            final int operationValue
+    ) {
+        final int currentValue = registerToValues.get(register);
+
+        switch (operation) {
+            case (">"):
+                return currentValue > operationValue;
+            case ("<"):
+                return currentValue < operationValue;
+            case (">="):
+                return currentValue >= operationValue;
+            case ("<="):
+                return currentValue <= operationValue;
+            case ("!="):
+                return currentValue != operationValue;
+            case ("=="):
+                return currentValue == operationValue;
+            default:
+                throw new RuntimeException("Unexpected operator");
+        }
     }
 
     private static List<Instruction> parseInput(final String filename) throws IOException {
