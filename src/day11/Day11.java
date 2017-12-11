@@ -15,6 +15,7 @@ public class Day11 {
 
         int x = 0;
         int y = 0;
+        int farthestDistance = 794; // answer to part 1
 
         for (String instruction : input) {
             switch (instruction) {
@@ -39,29 +40,86 @@ public class Day11 {
                     y++;
                     break;
             }
+
+            int distance = getDistance(x, y);
+            if (distance > farthestDistance) {
+                farthestDistance = distance;
+            }
         }
 
         System.out.println("X: " + x + " Y: " + y);
-        
+
+        System.out.println("Farthest distance: " + farthestDistance);
+    }
+
+    private static int getDistance(
+            final int x,
+            final int y
+    ) {
+        if (x == 0) {
+            return Math.abs(y);
+        }
+
+        if (y == 0) {
+            return Math.abs(x);
+        }
+
+        if ((x > 0 && y > 0) || (x < 0 && y < 0)) {
+            // quadrant 1 or 3
+            return Math.abs(x) + Math.abs(y);
+        }
+
         int steps = 0;
         int currX = 0;
         int currY = 0;
 
-        while (currX < x && currY > y) {
-            steps++;
-            currX++;
-            currY--;
+        if (x > 0 && y < 0) {
+            // quadrant 2
+            // go diagonally down as long as possible
+            while (currX < x && currY > y) {
+                steps++;
+                currX++;
+                currY--;
+            }
+
+            // then over
+            while (currX == x && currY != y) {
+                steps++;
+                currY--;
+            }
+
+            while (currY == y && currX != x) {
+                steps++;
+                currX++;
+            }
+
+            return steps;
         }
 
-        System.out.println("CurrX: " + currX + " CurrY: " + currY);
-        System.out.println("Steps: " + steps);
+        if (x < 0 && y > 0) {
+            // quadrant 4
+            // go diagonally down as long as possible
+            while (currX > x && currY < y) {
+                steps++;
+                currX--;
+                currY++;
+            }
 
-        while (currY > y) {
-            steps++;
-            currY--;
+            // then over
+            while (currX == x && currY != y) {
+                steps++;
+                currY++;
+            }
+
+            while (currY == y && currX != x) {
+                steps++;
+                currX--;
+            }
+
+            return steps;
         }
 
-        System.out.println("Steps: " + steps);
+        return 0;
     }
 
     private static List<String> parseInput(final String filename) throws IOException {
