@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Day10 {
@@ -16,10 +17,7 @@ public class Day10 {
 
         final int listSize = 256;
 
-        final List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < listSize; i++) {
-            list.add(i);
-        }
+        final List<Integer> list = IntStream.range(0, 256).boxed().collect(Collectors.toList());
 
         int roundsCount = 0;
         int skipSize = 0;
