@@ -15,7 +15,6 @@ public class FindNumPipes {
             int integer
     ) {
         final Set<Integer> visited = new HashSet<>();
-
         final Stack<Integer> stack = new Stack<>();
         stack.add(integer);
 
@@ -29,7 +28,7 @@ public class FindNumPipes {
                 visited.add(integer);
             }
 
-            Set<Integer> connections = map.get(integer);
+            final Set<Integer> connections = map.get(integer);
             connections.forEach(stack::push);
         }
 

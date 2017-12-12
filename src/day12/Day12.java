@@ -15,7 +15,7 @@ public class Day12 {
         int numGroups = 0;
 
         while (input.size() > 0) {
-            int value = input.keySet().stream()
+            final int value = input.keySet().stream()
                     .findFirst()
                     .orElseThrow(IllegalStateException::new);
 
@@ -34,7 +34,8 @@ public class Day12 {
 
         lines.forEach(line -> {
             line = line.replaceAll(",", "");
-            String[] splitLine = line.split(" ");
+            final String[] splitLine = line.split(" ");
+
             int self = Integer.valueOf(splitLine[0]);
 
             if (!parsedInput.containsKey(self)) {
@@ -43,7 +44,6 @@ public class Day12 {
 
             for (int i = 2; i < splitLine.length; i++) {
                 String string = splitLine[i];
-                string = string.replaceAll(",", "");
                 final int integer = Integer.valueOf(string);
 
                 parsedInput.get(self).add(integer);
